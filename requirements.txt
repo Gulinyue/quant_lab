@@ -1,0 +1,13 @@
+numpy
+pandas
+pyarrow
+pyyaml
+matplotlib
+scipy
+jinja2
+loguru
+python-dotenv
+tqdm
+tushare
+akshare
+streamlit

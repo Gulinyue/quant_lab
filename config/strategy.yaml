@@ -1,0 +1,12 @@
+strategy_name: "ranking_strategy"
+top_n: 3
+rebalance_every: 5
+factor_weights:
+  mom_20: 0.25
+  rev_5: 0.10
+  vol_20: -0.10
+  turnover_20: 0.10
+  price_volume_corr_20: 0.05
+  bp: 0.15
+  ep: 0.15
+  size: -0.10

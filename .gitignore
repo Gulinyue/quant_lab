@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+logs/
+data/raw/
+data/cache/
+data/temp/
+data/warehouse/
+reports/figures/
+reports/tables/
+reports/html/
+streamlit_stdout.log
+streamlit_stderr.log

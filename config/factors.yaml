@@ -1,0 +1,13 @@
+preprocess:
+  winsorize_lower: 0.05
+  winsorize_upper: 0.95
+  zscore: true
+factor_names:
+  - mom_20
+  - rev_5
+  - vol_20
+  - turnover_20
+  - price_volume_corr_20
+  - bp
+  - ep
+  - size
