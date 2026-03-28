@@ -14,4 +14,4 @@ class BacktestResult:
     nav: pd.DataFrame
     daily_positions: pd.DataFrame
     trades: pd.DataFrame
-    metrics: dict[str, float]
+    performance_summary: pd.DataFrame

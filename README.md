@@ -31,6 +31,11 @@ D:\anaconda\envs\alpha_lab\python.exe -c "import sys; print(sys.executable); pri
 - cross-sectional preprocess
 - diagnostics export
 - metadata export
+- single-factor research
+- factor correlation analysis
+- factor screening recommendations
+- strategy-layer target position generation
+- backtest-layer execution and NAV generation
 
 Supported factors:
 
@@ -157,12 +162,244 @@ Outputs:
 - min history
 - whether it is enabled in config
 
+## Factor Research Scripts
+
+Single-factor research:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_single_factor_analysis.py --factor mom_20
+```
+
+Factor correlation analysis:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_factor_correlation.py --threshold 0.8
+```
+
+Factor screening recommendation:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_factor_screening.py
+```
+
+## Research Output Files
+
+Warehouse outputs:
+
+- `data/warehouse/factor_research_summary.csv`
+- `data/warehouse/factor_correlation_matrix.csv`
+- `data/warehouse/high_correlation_pairs.csv`
+- `data/warehouse/factor_screening_summary.csv`
+
+Per-factor report outputs:
+
+- `reports/factor_research/<factor_name>/rank_ic.csv`
+- `reports/factor_research/<factor_name>/quantile_returns.csv`
+- `reports/factor_research/<factor_name>/yearly_summary.csv`
+- `reports/factor_research/<factor_name>/summary.json`
+- `reports/factor_research/<factor_name>/rank_ic.png`
+- `reports/factor_research/<factor_name>/quantile_returns.png`
+
+## Research Definitions
+
+Forward return:
+
+- current default is `1D`
+- definition: `close_adj(t+1) / close_adj(t) - 1`
+
+RankIC:
+
+- computed cross-sectionally by `trade_date`
+- both factor and forward return are ranked first
+- then rank correlation is computed
+
+Quantile return:
+
+- current default is `5` buckets
+- each date splits the factor cross section into quantiles
+- quantile return is the average forward return inside each bucket
+- `long_short = top_quantile - bottom_quantile`
+
+Factor correlation:
+
+- current implementation computes cross-sectional Spearman correlation by date
+- then averages those daily matrices across valid dates
+
+Screening recommendation:
+
+- `keep`
+- `review`
+- `deprecate_candidate`
+
+These labels are research suggestions only. They are not automatic trading decisions.
+
+## Strategy Layer Now Does
+
+- reads `factor_panel.parquet`
+- reads `factor_metadata.csv`
+- optionally reads `factor_screening_summary.csv`
+- filters factors by explicit config, metadata status, and screening recommendation
+- builds a weighted composite score
+- selects top `N` assets
+- outputs standardized target positions
+- outputs strategy diagnostics
+
+## Strategy Config
+
+Run:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_strategy.py
+```
+
+Main config file:
+
+- `config/strategy.yaml`
+
+Current priority order for factor admission:
+
+1. explicit whitelist / blacklist in `strategy.yaml`
+2. lifecycle status in `factor_metadata.csv`
+3. recommendation in `factor_screening_summary.csv`
+4. actual factor presence in `factor_panel.parquet`
+
+Current metadata status rules:
+
+- `active`: allowed
+- `testing`: allowed only if `allow_testing_factors: true`
+- `deprecated`: blocked by default
+- `archived`: blocked by default if present
+
+Current screening recommendation rules:
+
+- `keep`: allowed
+- `review`: allowed only if `allow_review_factors: true`
+- `deprecate_candidate`: blocked by default
+
+## Strategy Outputs
+
+Warehouse outputs:
+
+- `data/warehouse/target_positions.parquet`
+- `data/warehouse/strategy_diagnostics.csv`
+
+`target_positions.parquet` contains:
+
+- `score`
+- `target_weight`
+- `rank`
+- `signal`
+- `selected_by_strategy`
+- `factor_count_used`
+
+`strategy_diagnostics.csv` contains:
+
+- factor usage by date
+- factor drop reasons
+- candidate count
+- selected count
+- active factor count
+- dropped factor count
+- weighting method
+- rebalance flag
+- score non-null ratio
+- score dispersion
+- daily warning messages
+
+## Backtest Layer Now Does
+
+- reads `market_panel.parquet`
+- reads `target_positions.parquet`
+- shifts strategy targets to next-day execution
+- simulates minimal long-only daily execution
+- records `daily_positions`, `trades`, `nav`, and `performance_summary`
+
+## Backtest Config
+
+Run:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_backtest.py
+```
+
+Main config file:
+
+- `config/backtest.yaml`
+
+Current config sections:
+
+- `execution`
+- `cost`
+- `portfolio`
+- `constraints`
+
+## target_positions vs daily_positions
+
+`target_positions`:
+
+- strategy intent
+- desired weights
+- not actual execution output
+
+`daily_positions`:
+
+- backtest result
+- actual executed holdings after next-day execution
+- contains `weight`, `shares`, `close`, and `market_value`
+
+Do not use `target_positions` as a substitute for realized positions.
+
+## Backtest Assumptions
+
+Current assumptions:
+
+- signal is known after `trade_date` close
+- target weights execute on the next trading day
+- execution price convention is currently `next_open`
+- strategy is long-only
+- non-rebalance days naturally carry positions forward
+- no suspension modeling
+- no limit-up/limit-down modeling
+- no complex slippage model
+- output is for structure validation and basic research, not realistic live tradability
+
+## Backtest Outputs
+
+Warehouse outputs:
+
+- `data/warehouse/daily_positions.parquet`
+- `data/warehouse/trades.parquet`
+- `data/warehouse/nav.parquet`
+- `data/warehouse/performance_summary.csv`
+
+`nav.parquet` contains:
+
+- `gross_ret`
+- `turnover`
+- `cost`
+- `net_ret`
+- `nav`
+
+`performance_summary.csv` contains:
+
+- `total_return`
+- `annualized_return`
+- `annualized_volatility`
+- `sharpe`
+- `max_drawdown`
+- `avg_turnover`
+- `win_rate`
+- `trading_days`
+
 ## Full Script Flow
 
 ```powershell
 D:\anaconda\envs\alpha_lab\python.exe scripts\update_data.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\build_market_panel.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\build_factors.py
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_single_factor_analysis.py --factor mom_20
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_factor_correlation.py
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_factor_screening.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\run_strategy.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\run_backtest.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\run_analysis.py
@@ -174,6 +411,11 @@ D:\anaconda\envs\alpha_lab\python.exe scripts\build_report.py
 - more complex fundamental factors
 - industry and size neutralization
 - stronger direction-to-portfolio mapping
-- factor correlation analysis
-- factor selection and elimination workflow
 - factor version comparison tooling
+- richer factor redundancy clustering
+- multi-horizon single-factor research
+- more robust screening rules for short samples
+- richer weighting methods beyond equal weight
+- strategy-level risk controls and neutralization
+- more realistic execution constraints and market frictions
+- benchmark-relative performance and richer attribution
