@@ -1,13 +1,21 @@
-"""Strategy signal helpers."""
+"""Strategy-layer orchestration helpers."""
 
 from __future__ import annotations
 
 import pandas as pd
 
+from quant_lab.strategy_layer.base import StrategyRunResult
+from quant_lab.strategy_layer.factor_selector import load_strategy_config
 from quant_lab.strategy_layer.ranking_strategy import RankingStrategy
 
 
-def build_signals(factor_panel: pd.DataFrame, factor_weights: dict[str, float], top_n: int, rebalance_every: int) -> pd.DataFrame:
-    """Build target positions from a ranking strategy."""
-    strategy = RankingStrategy(factor_weights=factor_weights, top_n=top_n, rebalance_every=rebalance_every)
-    return strategy.generate_target_positions(factor_panel)
+def build_signals(
+    factor_panel: pd.DataFrame,
+    metadata: pd.DataFrame,
+    screening: pd.DataFrame | None,
+    strategy_config: dict,
+) -> StrategyRunResult:
+    """Build target positions from standard strategy-layer inputs."""
+    normalized_config = load_strategy_config(strategy_config)
+    strategy = RankingStrategy(strategy_config=normalized_config)
+    return strategy.run(factor_panel=factor_panel, metadata=metadata, screening=screening)

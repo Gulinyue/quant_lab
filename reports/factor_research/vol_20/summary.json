@@ -1,0 +1,12 @@
+{
+  "factor_name": "vol_20",
+  "horizon": 1,
+  "rank_ic_mean": NaN,
+  "rank_ic_std": NaN,
+  "icir": NaN,
+  "valid_rank_ic_dates": 0,
+  "quantile_dates": 0,
+  "long_short_mean": NaN,
+  "research_status": "failed_all_nan",
+  "message": "No valid RankIC observations were produced."
+}

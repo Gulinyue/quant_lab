@@ -1,4 +1,4 @@
-"""Generate target positions from factor panel."""
+"""Generate target positions from factor panel and research constraints."""
 
 from __future__ import annotations
 
@@ -25,19 +25,37 @@ def _ensure_panel_index(df):
 
 
 def run() -> None:
-    """Generate strategy targets."""
+    """Generate strategy targets and diagnostics."""
     bootstrap()
     settings = AppSettings.load()
     factor_panel = _ensure_panel_index(read_dataframe(WAREHOUSE_DIR / "factor_panel.parquet"))
-    strategy_cfg = settings.strategy
-    target_positions = build_signals(
+    metadata = read_dataframe(WAREHOUSE_DIR / "factor_metadata.csv")
+    screening_path = WAREHOUSE_DIR / "factor_screening_summary.csv"
+    screening = read_dataframe(screening_path) if screening_path.exists() else None
+
+    result = build_signals(
         factor_panel=factor_panel,
-        factor_weights=strategy_cfg.get("factor_weights", {}),
-        top_n=int(strategy_cfg.get("top_n", 3)),
-        rebalance_every=int(strategy_cfg.get("rebalance_every", 5)),
+        metadata=metadata,
+        screening=screening,
+        strategy_config=settings.strategy,
     )
-    write_dataframe(target_positions, WAREHOUSE_DIR / "target_positions.parquet")
-    logger.info("Target positions saved with shape {}", target_positions.shape)
+
+    target_path = WAREHOUSE_DIR / "target_positions.parquet"
+    diagnostics_path = WAREHOUSE_DIR / "strategy_diagnostics.csv"
+    write_dataframe(result.target_positions, target_path)
+    diagnostics_path.parent.mkdir(parents=True, exist_ok=True)
+    result.diagnostics.to_csv(diagnostics_path, index=False, encoding="utf-8")
+
+    logger.info("Candidate factors from config: {}", settings.strategy.get("factors", {}).get("selected", []))
+    logger.info("Selected factors used: {}", result.selected_factors)
+    logger.info("Dropped factors: {}", result.dropped_factors)
+    logger.info(
+        "Daily selected counts: {}",
+        result.diagnostics[["trade_date", "selected_count"]].drop_duplicates().to_dict(orient="records"),
+    )
+    logger.info("Target positions saved to: {}", target_path)
+    logger.info("Strategy diagnostics saved to: {}", diagnostics_path)
+    logger.info("Target positions shape: {}", result.target_positions.shape)
 
 
 if __name__ == "__main__":

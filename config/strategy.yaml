@@ -1,12 +1,25 @@
-strategy_name: "ranking_strategy"
-top_n: 3
-rebalance_every: 5
-factor_weights:
-  mom_20: 0.25
-  rev_5: 0.10
-  vol_20: -0.10
-  turnover_20: 0.10
-  price_volume_corr_20: 0.05
-  bp: 0.15
-  ep: 0.15
-  size: -0.10
+strategy:
+  name: ranking_v1
+  enabled: true
+  rebalance: daily
+  top_n: 30
+  weighting: equal
+  allow_testing_factors: false
+  allow_review_factors: true
+
+factors:
+  mode: explicit
+  selected:
+    - bp
+    - ep
+    - size
+  blacklist: []
+  weights:
+    bp: 0.4
+    ep: 0.4
+    size: -0.2
+  score_transform: none
+
+constraints:
+  max_weight_per_asset: 0.05
+  min_selected_assets: 5

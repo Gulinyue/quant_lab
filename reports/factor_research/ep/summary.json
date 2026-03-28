@@ -1,0 +1,12 @@
+{
+  "factor_name": "ep",
+  "horizon": 1,
+  "rank_ic_mean": 0.19795134493345135,
+  "rank_ic_std": 0.09987853373496122,
+  "icir": 31.462017560717523,
+  "valid_rank_ic_dates": 3,
+  "quantile_dates": 3,
+  "long_short_mean": 0.008883704052179949,
+  "research_status": "insufficient_sample",
+  "message": "Only 3 valid RankIC dates; below threshold 20."
+}
