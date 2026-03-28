@@ -13,3 +13,4 @@ reports/tables/
 reports/html/
 streamlit_stdout.log
 streamlit_stderr.log
+.idea/

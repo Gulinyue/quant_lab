@@ -1,79 +1,185 @@
 # Quant Lab v0.1
 
-面向 Windows 本地环境的 A 股低频量化研究框架。当前版本保留原有 6 层分层架构与脚本链路，并新增了一个单页本地控制面板。
+Quant Lab is a Windows-first A-share low-frequency research framework. The six-layer architecture remains unchanged in this repository. This round only hardens the data layer so raw updates are incremental, AkShare is a real daily fallback, and `market_panel` enforces a trustworthy canonical schema.
 
-## 默认启动方式
+## Default Startup
 
-以后默认从控制面板启动：
+The default local UI entry point remains:
 
 ```powershell
 D:\anaconda\envs\alpha_lab\python.exe -m streamlit run app.py
 ```
 
-## Windows PowerShell 安装步骤
+## Fixed Interpreter
 
-1. 确认固定解释器存在：
-
-```powershell
-D:\anaconda\envs\alpha_lab\python.exe -c "import sys; print(sys.executable); print(sys.version)"
-```
-
-2. 安装依赖：
-
-```powershell
-D:\anaconda\envs\alpha_lab\python.exe -m pip install -r requirements.txt
-```
-
-3. 配置环境变量：
-
-```powershell
-Copy-Item .env.example .env
-notepad .env
-```
-
-## 固定解释器
-
-本仓库所有默认命令统一使用：
+All default commands in this repository use:
 
 ```powershell
 D:\anaconda\envs\alpha_lab\python.exe
 ```
 
-不要使用裸 `python`、`py`、其他 conda 环境或 repo-local venv 作为默认示例。
+To verify the actual interpreter:
 
-## .env 配置方式
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe -c "import sys; print(sys.executable); print(sys.version)"
+```
 
-`.env` 示例：
+## Install
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe -m pip install -r requirements.txt
+Copy-Item .env.example .env
+notepad .env
+```
+
+`.env` example:
 
 ```env
 TUSHARE_TOKEN=your_tushare_token_here
 ```
 
-若未配置 `TUSHARE_TOKEN`，控制面板与 `scripts/update_data.py` 会回退到样例合成数据，便于本地 smoke test。
+## Raw Layer vs Canonical Layer
 
-## 控制面板功能
+Raw layer keeps source-native fields when practical:
 
-`app.py` 提供单页控制面板，可完成：
+- TuShare raw files may use `ts_code`, `trade_date`, `vol`
+- AkShare daily fallback is also normalized only to the raw daily schema, not to the full canonical schema
 
-- 更新数据
-- 构建市场面板
-- 构建因子
-- 运行策略
-- 运行回测
-- 生成报告
-- 全流程运行
+Canonical layer means `market_panel`:
 
-页面还会显示：
+- index: `trade_date`, `asset`
+- `trade_date` is `datetime64[ns]`
+- `asset` is the internal string key
+- `volume` is used instead of raw `vol`
 
-- 当前 Python executable 和 Python version
-- 日志区域
-- 运行状态
-- 关键产物存在性
-- `reports/figures/nav.png` 图片预览
+## Data Update Logic
 
-## 高级用法：保留旧脚本方式
+Run the data-layer entry point:
 
-旧脚本式运行仍然兼容：
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\update_data.py
+```
+
+Optional arguments:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\update_data.py --start 2024-01-01 --end 2024-03-31
+D:\anaconda\envs\alpha_lab\python.exe scripts\update_data.py --force-full
+```
+
+### What updates incrementally
+
+These raw tables now use real incremental merge logic:
+
+- `data/raw/tushare/daily.parquet`
+- `data/raw/tushare/adj_factor.parquet`
+- `data/raw/tushare/daily_basic.parquet`
+
+Incremental rule:
+
+1. If local parquet exists, read it and find the max `trade_date`
+2. Use refreshed `trade_cal` to find the next open day
+3. Pull only missing open dates up to `end_date`
+4. Merge old and new data
+5. Deduplicate by `ts_code + trade_date`
+6. Sort by `trade_date, ts_code`
+7. Persist again
+
+Each incremental update logs:
+
+- `old_rows`
+- `new_rows`
+- `merged_rows`
+- `dedup_removed_rows`
+- `final_rows`
+- final date range
+
+### What still refreshes in full
+
+- `trade_cal`
+- `stock_basic`
+
+Reason:
+
+- they are small reference tables
+- `trade_cal` is the driver for per-trade-date incremental pulls
+- full refresh is simpler and low risk here
+
+## AkShare Fallback Scope
+
+AkShare is currently used only as a real `daily` fallback at symbol level.
+
+What is implemented:
+
+- real A-share daily fetch
+- explicit column mapping
+- returned raw schema includes `ts_code`, `trade_date`, `open`, `high`, `low`, `close`, `vol`, `amount`
+- column assertions on AkShare response
+
+What is not implemented yet:
+
+- AkShare `adj_factor`
+- AkShare `daily_basic`
+- full-market automatic AkShare supplementation
+
+So the current fallback strategy is:
+
+- TuShare remains primary
+- AkShare is daily-only fallback/supplement
+
+## market_panel Missing-Value Policy
+
+Build command:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\build_market_panel.py
+```
+
+Required canonical columns:
+
+- `open`
+- `high`
+- `low`
+- `close`
+- `volume`
+- `amount`
+- `adj_factor`
+
+If any required column is missing, build stops with a clear error.
+
+Derived column:
+
+- `close_adj = close * adj_factor`
+
+Optional columns:
+
+- `turnover_rate`
+- `pe`
+- `pb`
+- `total_mv`
+
+If optional columns are missing:
+
+- they are added as `NaN`
+- a warning is logged
+- no silent `0.0` fill is allowed
+
+## market_panel Validator
+
+The market-panel builder validates:
+
+1. index names are `trade_date, asset`
+2. index is unique
+3. `trade_date` is `datetime64[ns]`
+4. `asset` is string-like
+5. required columns are complete
+6. index is sorted
+7. optional-column missing ratios
+8. duplicate-key count
+
+## Full Script Flow
+
+Advanced script-style flow remains compatible:
 
 ```powershell
 D:\anaconda\envs\alpha_lab\python.exe scripts\update_data.py
@@ -85,30 +191,9 @@ D:\anaconda\envs\alpha_lab\python.exe scripts\run_analysis.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\build_report.py
 ```
 
-## 全流程运行顺序
+## Current TODO
 
-控制面板中的 `Run All` 顺序为：
-
-1. 更新数据
-2. 构建市场面板
-3. 构建因子
-4. 运行策略
-5. 运行回测
-6. 生成分析结果
-7. 生成报告
-
-## 常见报错排查
-
-- `ModuleNotFoundError`：执行 `D:\anaconda\envs\alpha_lab\python.exe -m pip install -r requirements.txt`
-- `No module named streamlit`：说明控制面板依赖未安装
-- `TUSHARE_TOKEN is not configured`：检查 `.env` 是否存在且字段名正确
-- `ImportError: Unable to find a usable engine`：通常是 `pyarrow` 未安装
-- TuShare 拉数失败：先确认 token 权限，再确认是否已回退到样例数据
-
-## 如何确认当前实际使用的 Python 解释器
-
-```powershell
-D:\anaconda\envs\alpha_lab\python.exe -c "import sys; print(sys.executable)"
-```
-
-如果输出不是 `D:\anaconda\envs\alpha_lab\python.exe`，说明当前没有按项目要求运行。
+- AkShare does not provide `adj_factor` in this project yet
+- AkShare does not provide `daily_basic` in this project yet
+- fallback still focuses on `daily`
+- no automatic full-market gap-repair loop using AkShare yet
