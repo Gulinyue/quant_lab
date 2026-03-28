@@ -7,7 +7,7 @@ factors:
   - name: mom_20
     enabled: true
   - name: rev_5
-    enabled: true
+    enabled: false
   - name: vol_20
     enabled: true
   - name: turnover_20

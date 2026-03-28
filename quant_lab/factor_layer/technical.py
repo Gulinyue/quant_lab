@@ -29,6 +29,10 @@ def _finalize_series(frame: pd.DataFrame, column_name: str) -> pd.Series:
     required_columns=("close_adj",),
     direction="higher_is_better",
     min_history=20,
+    status="active",
+    version="1.0",
+    category="trend",
+    tags=("momentum_family", "mom_20"),
 )
 def factor_mom_20(market_panel: pd.DataFrame) -> pd.Series:
     """20-day momentum."""
@@ -44,6 +48,10 @@ def factor_mom_20(market_panel: pd.DataFrame) -> pd.Series:
     required_columns=("close_adj",),
     direction="higher_is_better",
     min_history=5,
+    status="deprecated",
+    version="1.0",
+    category="reversal",
+    tags=("reversal_family", "rev_5"),
 )
 def factor_rev_5(market_panel: pd.DataFrame) -> pd.Series:
     """5-day reversal."""
@@ -59,6 +67,10 @@ def factor_rev_5(market_panel: pd.DataFrame) -> pd.Series:
     required_columns=("close_adj",),
     direction="lower_is_better",
     min_history=20,
+    status="active",
+    version="1.0",
+    category="volatility",
+    tags=("volatility_family", "vol_20"),
 )
 def factor_vol_20(market_panel: pd.DataFrame) -> pd.Series:
     """20-day volatility."""
@@ -75,6 +87,10 @@ def factor_vol_20(market_panel: pd.DataFrame) -> pd.Series:
     required_columns=("turnover_rate",),
     direction="higher_is_better",
     min_history=20,
+    status="active",
+    version="1.0",
+    category="liquidity",
+    tags=("liquidity_family", "turnover_20"),
 )
 def factor_turnover_20(market_panel: pd.DataFrame) -> pd.Series:
     """20-day average turnover."""
@@ -90,6 +106,10 @@ def factor_turnover_20(market_panel: pd.DataFrame) -> pd.Series:
     required_columns=("close_adj", "volume"),
     direction="explicit_sign",
     min_history=20,
+    status="testing",
+    version="1.0",
+    category="liquidity",
+    tags=("liquidity_family", "price_volume_corr_20"),
 )
 def factor_price_volume_corr_20(market_panel: pd.DataFrame) -> pd.Series:
     """20-day price-volume correlation."""

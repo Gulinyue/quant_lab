@@ -34,13 +34,22 @@ def run() -> None:
     diagnostics_path = WAREHOUSE_DIR / "factor_diagnostics.csv"
     diagnostics_path.parent.mkdir(parents=True, exist_ok=True)
     result.diagnostics.to_csv(diagnostics_path, index=False, encoding="utf-8")
+    metadata_path = WAREHOUSE_DIR / "factor_metadata.csv"
+    result.metadata.to_csv(metadata_path, index=False, encoding="utf-8")
     logger.info("Enabled factors: {}", result.enabled_factors)
     logger.info("Succeeded factors: {}", result.succeeded_factors)
     logger.info("Failed factors: {}", result.failed_factors)
+    if result.deprecated_enabled_factors:
+        logger.warning("Deprecated factors enabled in config: {}", result.deprecated_enabled_factors)
     if not result.diagnostics.empty:
         logger.info(
             "Factor missing summary: {}",
             result.diagnostics[["factor_name", "missing_ratio", "status"]].to_dict(orient="records"),
+        )
+    if not result.metadata.empty:
+        logger.info(
+            "Factor lifecycle summary: {}",
+            result.metadata[["name", "status", "enabled_in_config"]].to_dict(orient="records"),
         )
     logger.info("Factor panel saved with shape {}", result.factor_panel.shape)
 

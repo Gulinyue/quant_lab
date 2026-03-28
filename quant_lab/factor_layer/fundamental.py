@@ -21,6 +21,10 @@ def _finalize_series(series: pd.Series, name: str) -> pd.Series:
     required_columns=("pb",),
     direction="higher_is_better",
     min_history=1,
+    status="active",
+    version="1.0",
+    category="valuation",
+    tags=("valuation_family", "bp"),
 )
 def factor_bp(market_panel: pd.DataFrame) -> pd.Series:
     """Book-to-price proxy."""
@@ -34,6 +38,10 @@ def factor_bp(market_panel: pd.DataFrame) -> pd.Series:
     required_columns=("pe",),
     direction="higher_is_better",
     min_history=1,
+    status="active",
+    version="1.0",
+    category="valuation",
+    tags=("valuation_family", "ep"),
 )
 def factor_ep(market_panel: pd.DataFrame) -> pd.Series:
     """Earnings-to-price proxy."""
@@ -47,6 +55,10 @@ def factor_ep(market_panel: pd.DataFrame) -> pd.Series:
     required_columns=("total_mv",),
     direction="lower_is_better",
     min_history=1,
+    status="active",
+    version="1.0",
+    category="size",
+    tags=("size_family", "size"),
 )
 def factor_size(market_panel: pd.DataFrame) -> pd.Series:
     """Log market capitalization."""

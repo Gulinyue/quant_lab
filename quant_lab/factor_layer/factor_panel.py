@@ -4,13 +4,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-import numpy as np
 import pandas as pd
 from loguru import logger
 from pandas.api.types import is_numeric_dtype
 
 from quant_lab.factor_layer import technical as _technical  # noqa: F401
 from quant_lab.factor_layer import fundamental as _fundamental  # noqa: F401
+from quant_lab.factor_layer.factor_diagnostics import build_factor_diagnostic_row, build_metadata_frame
+from quant_lab.factor_layer.lifecycle import is_deprecated_status
 from quant_lab.factor_layer.preprocess import winsorize_by_date, zscore_by_date
 from quant_lab.factor_layer.registry import FACTOR_REGISTRY, FactorSpec
 
@@ -24,6 +25,8 @@ class FactorBuildResult:
     enabled_factors: list[str]
     succeeded_factors: list[str]
     failed_factors: dict[str, str]
+    deprecated_enabled_factors: list[str]
+    metadata: pd.DataFrame
 
 
 def _validate_market_panel_index(market_panel: pd.DataFrame) -> None:
@@ -41,52 +44,6 @@ def _extract_enabled_factor_names(factor_config: dict) -> list[str]:
     return list(factor_config.get("factor_names", []))
 
 
-def _build_factor_diagnostics(
-    spec: FactorSpec,
-    factor_series: pd.Series | None,
-    row_count: int,
-    status: str,
-    message: str = "",
-) -> dict[str, object]:
-    if factor_series is None or factor_series.empty:
-        return {
-            "factor_name": spec.name,
-            "group": spec.group,
-            "required_columns": ",".join(spec.required_columns),
-            "direction": spec.direction,
-            "min_history": spec.min_history,
-            "row_count": row_count,
-            "non_null_ratio": 0.0,
-            "finite_ratio": 0.0,
-            "missing_ratio": 1.0,
-            "status": status,
-            "message": message,
-        }
-
-    non_null_ratio = float(factor_series.notna().mean())
-    finite_mask = pd.Series(False, index=factor_series.index)
-    valid = factor_series.dropna()
-    if not valid.empty:
-        finite_mask.loc[valid.index] = np.isfinite(pd.to_numeric(valid, errors="coerce"))
-        finite_ratio = float(finite_mask.mean())
-    else:
-        finite_ratio = 0.0
-
-    return {
-        "factor_name": spec.name,
-        "group": spec.group,
-        "required_columns": ",".join(spec.required_columns),
-        "direction": spec.direction,
-        "min_history": spec.min_history,
-        "row_count": row_count,
-        "non_null_ratio": non_null_ratio,
-        "finite_ratio": finite_ratio,
-        "missing_ratio": 1.0 - non_null_ratio,
-        "status": status,
-        "message": message,
-    }
-
-
 def build_factor_panel(market_panel: pd.DataFrame, factor_config: dict | None = None) -> FactorBuildResult:
     """Build a factor panel and diagnostics from the market panel."""
     _validate_market_panel_index(market_panel)
@@ -98,6 +55,7 @@ def build_factor_panel(market_panel: pd.DataFrame, factor_config: dict | None = 
     diagnostics_rows: list[dict[str, object]] = []
     succeeded: list[str] = []
     failed: dict[str, str] = {}
+    deprecated_enabled: list[str] = []
 
     for factor_name in enabled_factors:
         if not FACTOR_REGISTRY.has(factor_name):
@@ -121,11 +79,14 @@ def build_factor_panel(market_panel: pd.DataFrame, factor_config: dict | None = 
             continue
 
         spec = FACTOR_REGISTRY.get(factor_name)
+        if is_deprecated_status(spec.status):
+            deprecated_enabled.append(spec.name)
+            logger.warning("Deprecated factor is enabled in config: {}", spec.name)
         missing_dependencies = [column for column in spec.required_columns if column not in market_panel.columns]
         if missing_dependencies:
             message = f"missing dependencies: {missing_dependencies}"
             failed[factor_name] = message
-            diagnostics_rows.append(_build_factor_diagnostics(spec, None, len(market_panel), "failed", message))
+            diagnostics_rows.append(build_factor_diagnostic_row(spec.metadata, None, len(market_panel), "failed", message))
             logger.warning("Factor {} failed dependency check: {}", factor_name, missing_dependencies)
             continue
 
@@ -136,11 +97,11 @@ def build_factor_panel(market_panel: pd.DataFrame, factor_config: dict | None = 
             factor_series = pd.to_numeric(factor_series, errors="coerce").replace([float("inf"), float("-inf")], pd.NA)
             factor_frames.append(factor_series)
             succeeded.append(spec.name)
-            diagnostics_rows.append(_build_factor_diagnostics(spec, factor_series, len(market_panel), "ok"))
+            diagnostics_rows.append(build_factor_diagnostic_row(spec.metadata, factor_series, len(market_panel), "ok"))
         except Exception as exc:
             message = str(exc)
             failed[factor_name] = message
-            diagnostics_rows.append(_build_factor_diagnostics(spec, None, len(market_panel), "failed", message))
+            diagnostics_rows.append(build_factor_diagnostic_row(spec.metadata, None, len(market_panel), "failed", message))
             logger.warning("Factor {} build failed: {}", factor_name, exc)
 
     factor_panel = pd.concat(factor_frames, axis=1) if factor_frames else pd.DataFrame(index=market_panel.index)
@@ -159,6 +120,7 @@ def build_factor_panel(market_panel: pd.DataFrame, factor_config: dict | None = 
     diagnostics = pd.DataFrame(diagnostics_rows)
     if not diagnostics.empty:
         diagnostics = diagnostics.sort_values(["status", "factor_name"]).reset_index(drop=True)
+    metadata = build_metadata_frame([spec.metadata for spec in FACTOR_REGISTRY.list_specs()], set(enabled_factors))
 
     if not factor_panel.empty:
         if factor_panel.index.names != ["trade_date", "asset"]:
@@ -177,4 +139,6 @@ def build_factor_panel(market_panel: pd.DataFrame, factor_config: dict | None = 
         enabled_factors=enabled_factors,
         succeeded_factors=succeeded,
         failed_factors=failed,
+        deprecated_enabled_factors=deprecated_enabled,
+        metadata=metadata,
     )
