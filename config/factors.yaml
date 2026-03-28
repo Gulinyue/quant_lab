@@ -1,13 +1,22 @@
 preprocess:
+  winsorize: true
   winsorize_lower: 0.05
   winsorize_upper: 0.95
   zscore: true
-factor_names:
-  - mom_20
-  - rev_5
-  - vol_20
-  - turnover_20
-  - price_volume_corr_20
-  - bp
-  - ep
-  - size
+factors:
+  - name: mom_20
+    enabled: true
+  - name: rev_5
+    enabled: true
+  - name: vol_20
+    enabled: true
+  - name: turnover_20
+    enabled: true
+  - name: price_volume_corr_20
+    enabled: true
+  - name: bp
+    enabled: true
+  - name: ep
+    enabled: true
+  - name: size
+    enabled: true

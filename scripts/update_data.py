@@ -62,12 +62,12 @@ def _get_incremental_trade_days(path: Path, open_days: list[str], force_full: bo
     old_df = cache.load(path)
     if old_df.empty or "trade_date" not in old_df.columns:
         return open_days
-    old_trade_dates = pd.to_datetime(old_df["trade_date"], errors="coerce")
-    last_trade_date = old_trade_dates.max()
-    if pd.isna(last_trade_date):
-        return open_days
-    last_trade_date_str = last_trade_date.strftime("%Y%m%d")
-    return [trade_date for trade_date in open_days if trade_date > last_trade_date_str]
+    existing_trade_dates = {
+        trade_date
+        for trade_date in pd.to_datetime(old_df["trade_date"], errors="coerce").dt.strftime("%Y%m%d").dropna().tolist()
+    }
+    missing_trade_days = [trade_date for trade_date in open_days if trade_date not in existing_trade_dates]
+    return missing_trade_days
 
 
 def _fetch_by_trade_days(trade_days: list[str], fetch_func, dataset_name: str) -> pd.DataFrame:
@@ -91,7 +91,14 @@ def _incremental_update_table(path: Path, open_days: list[str], fetch_func, data
         logger.info("{} already up to date. old_rows={} final_rows={} date_range=[{}, {}]", dataset_name, len(old_df), len(old_df), *(_date_range(old_df)))
         return
 
-    logger.info("{} incremental fetch start. trade_days={} force_full={}", dataset_name, len(trade_days), args.force_full)
+    logger.info(
+        "{} incremental fetch start. missing_trade_days={} first_missing={} last_missing={} force_full={}",
+        dataset_name,
+        len(trade_days),
+        trade_days[0] if trade_days else None,
+        trade_days[-1] if trade_days else None,
+        args.force_full,
+    )
     new_df = _fetch_by_trade_days(trade_days, fetch_func=fetch_func, dataset_name=dataset_name)
     merged_df, summary = cache.merge_incremental(
         old_df=old_df,
