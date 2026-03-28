@@ -18,6 +18,7 @@ REPORT_DIR = PROJECT_ROOT / "reports"
 FIGURE_DIR = REPORT_DIR / "figures"
 TABLE_DIR = REPORT_DIR / "tables"
 HTML_DIR = REPORT_DIR / "html"
+RUNS_DIR = PROJECT_ROOT / "runs"
 
 REQUIRED_DIRS = [
     CONFIG_DIR,
@@ -28,6 +29,7 @@ REQUIRED_DIRS = [
     TEMP_DIR,
     LOG_DIR,
     REPORT_DIR,
+    RUNS_DIR,
     FIGURE_DIR,
     TABLE_DIR,
     HTML_DIR,

@@ -1,0 +1,10 @@
+start_date: "2024-01-01"
+end_date: "2025-12-31"
+universe:
+  - "000001.SZ"
+  - "000002.SZ"
+  - "600000.SH"
+  - "600519.SH"
+  - "300750.SZ"
+raw_format: "parquet"
+warehouse_format: "parquet"

@@ -1,0 +1,596 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Quant Lab Backtest Report</title>
+  <style>
+    body { font-family: "Microsoft YaHei", sans-serif; margin: 32px; color: #1f2937; background: #f8fafc; }
+    h1, h2, h3 { color: #0f172a; }
+    .warning { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; padding: 12px 16px; margin-bottom: 20px; border-radius: 8px; }
+    .cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    .card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 18px; min-width: 160px; }
+    .card-label { font-size: 12px; color: #6b7280; text-transform: uppercase; }
+    .card-value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+    .section { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px; margin-bottom: 18px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+    th, td { border: 1px solid #d1d5db; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; }
+    img { max-width: 100%; border: 1px solid #e5e7eb; margin-top: 12px; border-radius: 6px; background: white; }
+    ul { margin-top: 8px; }
+    .muted { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <h1>Quant Lab Backtest Report</h1>
+  <p class="muted">Generated at 2026-03-28 16:56:48</p>
+
+  
+  <div class="warning">
+    <strong>Short Sample Warning:</strong> Sample is too short. Report is only for structure validation and does not support strategy conclusions.
+  </div>
+  
+
+  <div class="cards">
+    
+    <div class="card">
+      <div class="card-label">Total Return</div>
+      <div class="card-value">0.87%</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-label">Annualized Return</div>
+      <div class="card-value">72.49%</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-label">Sharpe</div>
+      <div class="card-value">18.07</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-label">Max Drawdown</div>
+      <div class="card-value">-0.12%</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-label">Trading Days</div>
+      <div class="card-value">4</div>
+    </div>
+    
+  </div>
+
+  <div class="section">
+    <h2>Run Environment</h2>
+    <p>Workspace: D:\quant_lab</p>
+    <p>Figures: D:\quant_lab\reports\figures</p>
+    <p>Tables: D:\quant_lab\reports\tables</p>
+  </div>
+
+  <div class="section">
+    <h2>Backtest Convention</h2>
+    <ul>
+      
+      <li>Signals are known after close and execute on next_open.</li>
+      
+      <li>Current backtest is long-only and strategy weights are equal-weight targets.</li>
+      
+      <li>Cost model includes commission, slippage, and stamp_tax_sell.</li>
+      
+      <li>Suspension, limit-up/down, complex slippage, and risk model are not supported.</li>
+      
+      <li>Results are for research and structure validation, not live tradability.</li>
+      
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Sample Summary</h2>
+    <p>Sample Start: 2024-01-02</p>
+    <p>Sample End: 2024-01-05</p>
+    <p>Trading Days: 4</p>
+  </div>
+
+  <div class="section">
+    <h2>Performance Summary</h2>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>total_return</th>
+      <th>annualized_return</th>
+      <th>annualized_volatility</th>
+      <th>sharpe</th>
+      <th>max_drawdown</th>
+      <th>avg_turnover</th>
+      <th>win_rate</th>
+      <th>trading_days</th>
+      <th>message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.008691</td>
+      <td>0.724872</td>
+      <td>0.040107</td>
+      <td>18.073229</td>
+      <td>-0.001154</td>
+      <td>0.268252</td>
+      <td>0.75</td>
+      <td>4</td>
+      <td>short_sample</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+
+  <div class="section">
+    <h2>NAV</h2>
+    <img src="../figures/nav_curve.png" alt="NAV" />
+  </div>
+
+  <div class="section">
+    <h2>Drawdown</h2>
+    <img src="../figures/drawdown_curve.png" alt="Drawdown" />
+  </div>
+
+  <div class="section">
+    <h2>Turnover</h2>
+    <img src="../figures/turnover_curve.png" alt="Turnover" />
+  </div>
+
+  
+  <div class="section">
+    <h2>Strategy Summary</h2>
+    <p>Rebalance Days: 4</p>
+    <p>Average Candidate Count: 5330.25</p>
+    <p>Average Selected Count: 30.00</p>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>rebalance_days</th>
+      <th>trade_count</th>
+      <th>avg_candidate_count</th>
+      <th>avg_selected_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4</td>
+      <td>45</td>
+      <td>5330.25</td>
+      <td>30.0</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+  
+
+  
+  <div class="section">
+    <h2>Factor Summary</h2>
+    <p>Research Rows: 7</p>
+    <p>Screening Rows: 8</p>
+    <p>Metadata Rows: 8</p>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>active_factor_count</th>
+      <th>testing_factor_count</th>
+      <th>deprecated_factor_count</th>
+      <th>keep_count</th>
+      <th>review_count</th>
+      <th>deprecate_candidate_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>6</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+    <img src="../figures/screening_distribution.png" alt="Screening Distribution" />
+  </div>
+  
+
+  
+  <div class="section">
+    <h2>Factor Correlation</h2>
+    <img src="../figures/factor_correlation_heatmap.png" alt="Correlation Heatmap" />
+  </div>
+  
+
+  
+  <div class="section">
+    <h2>Top Trades</h2>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>trade_date</th>
+      <th>asset</th>
+      <th>side</th>
+      <th>price</th>
+      <th>shares</th>
+      <th>amount</th>
+      <th>cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2024-01-05</td>
+      <td>688298.SH</td>
+      <td>SELL</td>
+      <td>37.16</td>
+      <td>900</td>
+      <td>33444.0</td>
+      <td>60.1992</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>002002.SZ</td>
+      <td>BUY</td>
+      <td>0.90</td>
+      <td>37000</td>
+      <td>33300.0</td>
+      <td>26.6400</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600908.SH</td>
+      <td>BUY</td>
+      <td>4.97</td>
+      <td>6700</td>
+      <td>33299.0</td>
+      <td>26.6392</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>603603.SH</td>
+      <td>BUY</td>
+      <td>1.37</td>
+      <td>24300</td>
+      <td>33291.0</td>
+      <td>26.6328</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600665.SH</td>
+      <td>BUY</td>
+      <td>3.78</td>
+      <td>8800</td>
+      <td>33264.0</td>
+      <td>26.6112</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>601101.SH</td>
+      <td>BUY</td>
+      <td>6.52</td>
+      <td>5100</td>
+      <td>33252.0</td>
+      <td>26.6016</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600368.SH</td>
+      <td>BUY</td>
+      <td>4.10</td>
+      <td>8100</td>
+      <td>33210.0</td>
+      <td>26.5680</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>002807.SZ</td>
+      <td>BUY</td>
+      <td>3.57</td>
+      <td>9300</td>
+      <td>33201.0</td>
+      <td>26.5608</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600340.SH</td>
+      <td>BUY</td>
+      <td>1.71</td>
+      <td>19400</td>
+      <td>33174.0</td>
+      <td>26.5392</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>601528.SH</td>
+      <td>BUY</td>
+      <td>4.95</td>
+      <td>6700</td>
+      <td>33165.0</td>
+      <td>26.5320</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600502.SH</td>
+      <td>BUY</td>
+      <td>4.67</td>
+      <td>7100</td>
+      <td>33157.0</td>
+      <td>26.5256</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600035.SH</td>
+      <td>BUY</td>
+      <td>3.90</td>
+      <td>8500</td>
+      <td>33150.0</td>
+      <td>26.5200</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600658.SH</td>
+      <td>BUY</td>
+      <td>4.42</td>
+      <td>7500</td>
+      <td>33150.0</td>
+      <td>26.5200</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>601860.SH</td>
+      <td>BUY</td>
+      <td>2.53</td>
+      <td>13100</td>
+      <td>33143.0</td>
+      <td>26.5144</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>000090.SZ</td>
+      <td>BUY</td>
+      <td>4.54</td>
+      <td>7300</td>
+      <td>33142.0</td>
+      <td>26.5136</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600075.SH</td>
+      <td>BUY</td>
+      <td>4.36</td>
+      <td>7600</td>
+      <td>33136.0</td>
+      <td>26.5088</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>000672.SZ</td>
+      <td>BUY</td>
+      <td>8.08</td>
+      <td>4100</td>
+      <td>33128.0</td>
+      <td>26.5024</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>600064.SH</td>
+      <td>BUY</td>
+      <td>6.02</td>
+      <td>5500</td>
+      <td>33110.0</td>
+      <td>26.4880</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>603323.SH</td>
+      <td>BUY</td>
+      <td>4.19</td>
+      <td>7900</td>
+      <td>33101.0</td>
+      <td>26.4808</td>
+    </tr>
+    <tr>
+      <td>2024-01-03</td>
+      <td>002081.SZ</td>
+      <td>BUY</td>
+      <td>3.76</td>
+      <td>8800</td>
+      <td>33088.0</td>
+      <td>26.4704</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+  
+
+  <div class="section">
+    <h2>Latest Positions</h2>
+    <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>trade_date</th>
+      <th>asset</th>
+      <th>weight</th>
+      <th>shares</th>
+      <th>close</th>
+      <th>market_value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2024-01-05</td>
+      <td>601528.SH</td>
+      <td>0.036267</td>
+      <td>6700</td>
+      <td>5.46</td>
+      <td>36582.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>002807.SZ</td>
+      <td>0.033560</td>
+      <td>9300</td>
+      <td>3.64</td>
+      <td>33852.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600908.SH</td>
+      <td>0.033543</td>
+      <td>6700</td>
+      <td>5.05</td>
+      <td>33835.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>601339.SH</td>
+      <td>0.033505</td>
+      <td>6800</td>
+      <td>4.97</td>
+      <td>33796.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600502.SH</td>
+      <td>0.033505</td>
+      <td>7100</td>
+      <td>4.76</td>
+      <td>33796.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>601860.SH</td>
+      <td>0.033377</td>
+      <td>13100</td>
+      <td>2.57</td>
+      <td>33667.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>603323.SH</td>
+      <td>0.033286</td>
+      <td>7900</td>
+      <td>4.25</td>
+      <td>33575.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>000090.SZ</td>
+      <td>0.033233</td>
+      <td>7400</td>
+      <td>4.53</td>
+      <td>33522.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>002839.SZ</td>
+      <td>0.033201</td>
+      <td>8500</td>
+      <td>3.94</td>
+      <td>33490.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>002002.SZ</td>
+      <td>0.033199</td>
+      <td>36400</td>
+      <td>0.92</td>
+      <td>33488.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>603603.SH</td>
+      <td>0.033192</td>
+      <td>27000</td>
+      <td>1.24</td>
+      <td>33480.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600064.SH</td>
+      <td>0.033152</td>
+      <td>5500</td>
+      <td>6.08</td>
+      <td>33440.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600665.SH</td>
+      <td>0.033120</td>
+      <td>8700</td>
+      <td>3.84</td>
+      <td>33408.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>002061.SZ</td>
+      <td>0.033013</td>
+      <td>9000</td>
+      <td>3.70</td>
+      <td>33300.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600694.SH</td>
+      <td>0.033001</td>
+      <td>1900</td>
+      <td>17.52</td>
+      <td>33288.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600035.SH</td>
+      <td>0.032914</td>
+      <td>8300</td>
+      <td>4.00</td>
+      <td>33200.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600658.SH</td>
+      <td>0.032851</td>
+      <td>7600</td>
+      <td>4.36</td>
+      <td>33136.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>002081.SZ</td>
+      <td>0.032823</td>
+      <td>8900</td>
+      <td>3.72</td>
+      <td>33108.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>601101.SH</td>
+      <td>0.032790</td>
+      <td>4900</td>
+      <td>6.75</td>
+      <td>33075.0</td>
+    </tr>
+    <tr>
+      <td>2024-01-05</td>
+      <td>600340.SH</td>
+      <td>0.032749</td>
+      <td>19900</td>
+      <td>1.66</td>
+      <td>33034.0</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+
+  <div class="section">
+    <h2>Limitations</h2>
+    <ul>
+      <li>Current report is for research and structure validation only.</li>
+      <li>Current execution convention is next_open.</li>
+      <li>Current engine does not support suspension, limit-up/down, or complex slippage.</li>
+      <li>Current strategy is long-only and equal-weight.</li>
+    </ul>
+  </div>
+</body>
+</html>

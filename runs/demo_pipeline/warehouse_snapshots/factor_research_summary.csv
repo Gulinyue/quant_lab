@@ -1,0 +1,8 @@
+factor_name,horizon,rank_ic_mean,rank_ic_std,icir,valid_rank_ic_dates,quantile_dates,long_short_mean,research_status,message
+mom_20,1,,,,0,0,,failed_all_nan,No valid RankIC observations were produced.
+vol_20,1,,,,0,0,,failed_all_nan,No valid RankIC observations were produced.
+turnover_20,1,,,,0,0,,failed_all_nan,No valid RankIC observations were produced.
+price_volume_corr_20,1,,,,0,0,,failed_all_nan,No valid RankIC observations were produced.
+bp,1,0.2475252085040232,0.0986701062359839,39.823012454539615,3,3,0.0101339085761895,insufficient_sample,Only 3 valid RankIC dates; below threshold 20.
+ep,1,0.1979513449334513,0.0998785337349612,31.462017560717523,3,3,0.0088837040521799,insufficient_sample,Only 3 valid RankIC dates; below threshold 20.
+size,1,-0.002005916199344565,0.18651041501809187,-0.17073005002278654,3,3,-4.57695404711232e-05,insufficient_sample,Only 3 valid RankIC dates; below threshold 20.

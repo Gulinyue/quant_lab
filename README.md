@@ -36,6 +36,8 @@ D:\anaconda\envs\alpha_lab\python.exe -c "import sys; print(sys.executable); pri
 - factor screening recommendations
 - strategy-layer target position generation
 - backtest-layer execution and NAV generation
+- report-layer figure/table/html generation
+- pipeline-level run orchestration and artifact isolation
 
 Supported factors:
 
@@ -391,6 +393,126 @@ Warehouse outputs:
 - `win_rate`
 - `trading_days`
 
+## Report Layer Now Does
+
+- reads backtest, strategy, and factor research outputs from `data/warehouse`
+- generates standalone PNG figures
+- generates standalone CSV tables
+- builds a local HTML report
+- highlights short-sample warning near the top of the report
+
+Run:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\build_report.py
+```
+
+Main config file:
+
+- `config/report.yaml`
+
+Current report includes:
+
+- title and generation time
+- environment summary
+- backtest convention summary
+- sample window summary
+- performance summary cards
+- NAV / drawdown / turnover charts
+- strategy summary
+- factor summary
+- top trades
+- latest positions
+- limitation notes
+
+Current report assumptions and limits:
+
+- current backtest convention is `next_open`
+- cost model includes commission, slippage, and stamp_tax_sell
+- report is for research and structure validation only
+- short sample triggers explicit warning in HTML
+- no PDF export
+- no multi-strategy comparison
+
+## Pipeline Runner
+
+The project now supports a minimal end-to-end pipeline from factor build to HTML report.
+
+Run:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_pipeline.py --run-id demo_run
+```
+
+Optional flags:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_pipeline.py --run-id demo_run --skip-single-factor --skip-correlation
+```
+
+## run_id and runs Directory
+
+Each pipeline execution gets a dedicated run directory:
+
+- `runs/<run_id>/`
+
+Current run directory includes:
+
+- `manifest.json`
+- `configs/`
+- `warehouse_snapshots/`
+- `figures/`
+- `tables/`
+- `html/`
+
+`run_id` is a readable timestamp-based identifier used to isolate outputs and make runs comparable.
+
+## Manifest
+
+Each run writes:
+
+- `runs/<run_id>/manifest.json`
+- `runs/index.csv`
+
+Current manifest records:
+
+- run id
+- start/end time
+- pipeline status
+- stage statuses
+- config snapshots
+- key input files
+- key output files
+- warnings
+- errors
+
+## Pipeline Stage Order
+
+Current default order:
+
+1. `build_factors`
+2. `run_single_factor_analysis`
+3. `run_factor_correlation`
+4. `run_factor_screening`
+5. `run_strategy`
+6. `run_backtest`
+7. `build_report`
+
+Current critical stages:
+
+- `build_factors`
+- `run_factor_screening`
+- `run_strategy`
+- `run_backtest`
+- `build_report`
+
+Current optional stages:
+
+- `run_single_factor_analysis`
+- `run_factor_correlation`
+
+Critical stage failure stops the pipeline. Optional stage failure is recorded as a warning and the pipeline continues.
+
 ## Full Script Flow
 
 ```powershell
@@ -402,8 +524,9 @@ D:\anaconda\envs\alpha_lab\python.exe scripts\run_factor_correlation.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\run_factor_screening.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\run_strategy.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\run_backtest.py
-D:\anaconda\envs\alpha_lab\python.exe scripts\run_analysis.py
 D:\anaconda\envs\alpha_lab\python.exe scripts\build_report.py
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_pipeline.py --run-id demo_run
+D:\anaconda\envs\alpha_lab\python.exe scripts\run_analysis.py
 ```
 
 ## Current TODO
@@ -419,3 +542,6 @@ D:\anaconda\envs\alpha_lab\python.exe scripts\build_report.py
 - strategy-level risk controls and neutralization
 - more realistic execution constraints and market frictions
 - benchmark-relative performance and richer attribution
+- richer report templates and benchmark comparison
+- stage retry / resume support in pipeline orchestration
+- richer run-to-run comparison tooling

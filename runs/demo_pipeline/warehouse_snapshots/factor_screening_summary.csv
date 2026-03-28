@@ -1,0 +1,9 @@
+factor_name,quality_status,predictiveness_status,redundancy_status,recommendation,reasons
+bp,ok,weak,ok,review,insufficient_history
+ep,ok,weak,ok,review,insufficient_history
+mom_20,bad,weak,ok,deprecate_candidate,missing_ratio_too_high;finite_ratio_too_low;insufficient_history;weak_rank_ic
+price_volume_corr_20,bad,weak,ok,deprecate_candidate,missing_ratio_too_high;finite_ratio_too_low;insufficient_history;weak_rank_ic
+rev_5,not_built,not_researched,ok,deprecate_candidate,
+size,ok,weak,ok,review,insufficient_history;weak_rank_ic
+turnover_20,bad,weak,ok,deprecate_candidate,missing_ratio_too_high;finite_ratio_too_low;insufficient_history;weak_rank_ic
+vol_20,bad,weak,ok,deprecate_candidate,missing_ratio_too_high;finite_ratio_too_low;insufficient_history;weak_rank_ic

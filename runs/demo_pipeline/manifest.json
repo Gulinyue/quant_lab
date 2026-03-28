@@ -1,0 +1,79 @@
+{
+  "run_id": "demo_pipeline",
+  "started_at": "2026-03-28T16:56:43",
+  "finished_at": "2026-03-28T16:56:48",
+  "status": "success",
+  "artifact_root": "D:\\quant_lab\\runs\\demo_pipeline",
+  "stage_statuses": {
+    "build_factors": "success",
+    "run_single_factor_analysis": "success",
+    "run_factor_correlation": "success",
+    "run_factor_screening": "success",
+    "run_strategy": "success",
+    "run_backtest": "success",
+    "build_report": "success"
+  },
+  "config_snapshot": {
+    "run_id": "demo_pipeline",
+    "time_range": {
+      "start": "2024-01-02",
+      "end": "2024-01-05"
+    },
+    "enabled_factors": [
+      "mom_20",
+      "vol_20",
+      "turnover_20",
+      "price_volume_corr_20",
+      "bp",
+      "ep",
+      "size"
+    ],
+    "strategy_name": "ranking_v1",
+    "backtest_execution_mode": "next_open",
+    "report_output_path": "reports/html/backtest_report.html",
+    "config_snapshot": {
+      "data.yaml": "D:\\quant_lab\\runs\\demo_pipeline\\configs\\data.yaml",
+      "factors.yaml": "D:\\quant_lab\\runs\\demo_pipeline\\configs\\factors.yaml",
+      "strategy.yaml": "D:\\quant_lab\\runs\\demo_pipeline\\configs\\strategy.yaml",
+      "backtest.yaml": "D:\\quant_lab\\runs\\demo_pipeline\\configs\\backtest.yaml",
+      "report.yaml": "D:\\quant_lab\\runs\\demo_pipeline\\configs\\report.yaml"
+    }
+  },
+  "input_files": [
+    "D:\\quant_lab\\data\\warehouse\\factor_research_summary.csv",
+    "D:\\quant_lab\\data\\warehouse\\factor_screening_summary.csv",
+    "D:\\quant_lab\\data\\warehouse\\strategy_diagnostics.csv",
+    "D:\\quant_lab\\data\\warehouse\\nav.parquet",
+    "D:\\quant_lab\\data\\warehouse\\trades.parquet",
+    "D:\\quant_lab\\data\\warehouse\\daily_positions.parquet",
+    "D:\\quant_lab\\data\\warehouse\\performance_summary.csv"
+  ],
+  "output_files": [
+    "D:\\quant_lab\\runs\\demo_pipeline\\warehouse_snapshots\\factor_research_summary.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\warehouse_snapshots\\factor_screening_summary.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\warehouse_snapshots\\strategy_diagnostics.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\warehouse_snapshots\\nav.parquet",
+    "D:\\quant_lab\\runs\\demo_pipeline\\warehouse_snapshots\\trades.parquet",
+    "D:\\quant_lab\\runs\\demo_pipeline\\warehouse_snapshots\\daily_positions.parquet",
+    "D:\\quant_lab\\runs\\demo_pipeline\\warehouse_snapshots\\performance_summary.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\figures\\drawdown_curve.png",
+    "D:\\quant_lab\\runs\\demo_pipeline\\figures\\factor_correlation_heatmap.png",
+    "D:\\quant_lab\\runs\\demo_pipeline\\figures\\nav.png",
+    "D:\\quant_lab\\runs\\demo_pipeline\\figures\\nav_curve.png",
+    "D:\\quant_lab\\runs\\demo_pipeline\\figures\\screening_distribution.png",
+    "D:\\quant_lab\\runs\\demo_pipeline\\figures\\turnover_curve.png",
+    "D:\\quant_lab\\runs\\demo_pipeline\\tables\\factor_summary.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\tables\\latest_positions.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\tables\\performance_summary.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\tables\\rank_ic_mom20.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\tables\\strategy_summary.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\tables\\top_trades.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\tables\\yearly_breakdown.csv",
+    "D:\\quant_lab\\runs\\demo_pipeline\\html\\backtest_report.html"
+  ],
+  "warnings": [
+    "short_sample"
+  ],
+  "errors": [],
+  "short_sample": true
+}
