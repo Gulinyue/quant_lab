@@ -1,0 +1,194 @@
+{
+  "run_id": "20260328_194336_panel_run",
+  "started_at": "2026-03-28T19:43:36",
+  "finished_at": "2026-03-28T19:43:42",
+  "status": "success",
+  "artifact_root": "D:\\quant_lab\\runs\\20260328_194336_panel_run",
+  "stage_statuses": {
+    "build_factors": "success",
+    "run_factor_research": "success",
+    "run_strategy": "success",
+    "run_backtest": "success",
+    "build_report": "success"
+  },
+  "config_snapshot": {
+    "runtime_configs": {
+      "data": {
+        "start_date": "2024-01-01",
+        "end_date": "2026-03-28",
+        "universe": [
+          "000001.SZ",
+          "000002.SZ",
+          "600000.SH",
+          "600519.SH",
+          "300750.SZ"
+        ],
+        "raw_format": "parquet",
+        "warehouse_format": "parquet"
+      },
+      "factors": {
+        "preprocess": {
+          "winsorize": true,
+          "winsorize_lower": 0.05,
+          "winsorize_upper": 0.95,
+          "zscore": true
+        },
+        "factors": [
+          {
+            "name": "bp",
+            "enabled": true
+          },
+          {
+            "name": "ep",
+            "enabled": true
+          },
+          {
+            "name": "size",
+            "enabled": true
+          },
+          {
+            "name": "mom_20",
+            "enabled": false
+          },
+          {
+            "name": "turnover_20",
+            "enabled": false
+          },
+          {
+            "name": "vol_20",
+            "enabled": false
+          },
+          {
+            "name": "rev_5",
+            "enabled": false
+          },
+          {
+            "name": "price_volume_corr_20",
+            "enabled": false
+          }
+        ]
+      },
+      "strategy": {
+        "strategy": {
+          "name": "ranking_v1",
+          "enabled": true,
+          "rebalance": "weekly",
+          "top_n": 30,
+          "weighting": "equal",
+          "allow_testing_factors": false,
+          "allow_review_factors": true
+        },
+        "factors": {
+          "mode": "explicit",
+          "selected": [
+            "bp",
+            "ep",
+            "size"
+          ],
+          "blacklist": [],
+          "weights": {
+            "bp": 0.5,
+            "ep": 0.1,
+            "size": 0.4
+          },
+          "score_transform": "none"
+        },
+        "constraints": {
+          "max_weight_per_asset": 0.05,
+          "min_selected_assets": 5
+        }
+      },
+      "backtest": {
+        "execution": {
+          "price": "next_open",
+          "lot_size": 100
+        },
+        "cost": {
+          "commission": 0.0003,
+          "slippage": 0.0005,
+          "stamp_tax_sell": 0.001
+        },
+        "portfolio": {
+          "initial_capital": 1000000.0
+        },
+        "constraints": {
+          "long_only": true
+        }
+      },
+      "report": {
+        "report": {
+          "title": "Quant Lab Backtest Report",
+          "output_html": "reports/html/backtest_report.html",
+          "include_factor_section": true,
+          "include_strategy_section": true,
+          "include_trade_table": true,
+          "max_trade_rows": 20,
+          "max_position_rows": 20
+        }
+      }
+    },
+    "summary": {
+      "action": "pipeline",
+      "messages": [
+        "因子构建完成，shape=(2425, 3)",
+        "单因子研究完成，因子数=3",
+        "因子相关性分析完成，矩阵 shape=(3, 3)",
+        "因子筛选完成，记录数=8",
+        "策略运行完成，shape=(2425, 6)",
+        "回测完成，最终净值=1.0921",
+        "报告生成完成：reports\\html\\backtest_report.html"
+      ],
+      "selected_factors": [
+        "bp",
+        "ep",
+        "size"
+      ],
+      "asset_count": 5,
+      "performance_summary": {
+        "total_return": 0.09210450719999996,
+        "annualized_return": 0.04684312368624255,
+        "annualized_volatility": 0.04471876865363552,
+        "sharpe": 1.0475047747638357,
+        "max_drawdown": -0.056539639721756574,
+        "avg_turnover": 0.0004033319587628866,
+        "win_rate": 0.5402061855670103,
+        "trading_days": 485,
+        "message": "ok"
+      },
+      "report_path": "reports\\html\\backtest_report.html"
+    }
+  },
+  "input_files": [],
+  "output_files": [
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\factor_panel.parquet",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\factor_diagnostics.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\factor_metadata.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\factor_research_summary.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\factor_screening_summary.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\factor_correlation_matrix.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\high_correlation_pairs.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\target_positions.parquet",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\strategy_diagnostics.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\daily_positions.parquet",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\trades.parquet",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\nav.parquet",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\warehouse_snapshots\\performance_summary.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\figures\\drawdown_curve.png",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\figures\\factor_correlation_heatmap.png",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\figures\\nav.png",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\figures\\nav_curve.png",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\figures\\screening_distribution.png",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\figures\\turnover_curve.png",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\tables\\factor_summary.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\tables\\latest_positions.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\tables\\performance_summary.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\tables\\rank_ic_mom20.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\tables\\strategy_summary.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\tables\\top_trades.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\tables\\yearly_breakdown.csv",
+    "D:\\quant_lab\\runs\\20260328_194336_panel_run\\html\\backtest_report.html"
+  ],
+  "warnings": [],
+  "errors": [],
+  "short_sample": false
+}

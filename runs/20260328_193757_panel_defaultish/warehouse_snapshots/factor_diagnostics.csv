@@ -1,0 +1,9 @@
+factor_name,group,required_columns,direction,min_history,row_count,non_null_ratio,finite_ratio,missing_ratio,status,message
+bp,fundamental,pb,higher_is_better,1,2425,1.0,1.0,0.0,ok,
+ep,fundamental,pe,higher_is_better,1,2425,0.9232989690721649,0.9232989690721649,0.07670103092783509,ok,
+mom_20,technical,close_adj,higher_is_better,20,2425,0.9587628865979382,0.9587628865979382,0.04123711340206182,ok,
+price_volume_corr_20,technical,"close_adj,volume",explicit_sign,20,2425,0.9587628865979382,0.9587628865979382,0.04123711340206182,ok,
+rev_5,technical,close_adj,higher_is_better,5,2425,0.9896907216494846,0.9896907216494846,0.010309278350515427,ok,
+size,fundamental,total_mv,lower_is_better,1,2425,1.0,1.0,0.0,ok,
+turnover_20,technical,turnover_rate,higher_is_better,20,2425,0.9608247422680413,0.9608247422680413,0.039175257731958735,ok,
+vol_20,technical,close_adj,lower_is_better,20,2425,0.9587628865979382,0.9587628865979382,0.04123711340206182,ok,

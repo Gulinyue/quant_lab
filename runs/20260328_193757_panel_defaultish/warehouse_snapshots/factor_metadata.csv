@@ -1,0 +1,9 @@
+name,group,category,status,version,direction,required_columns,min_history,description,tags,enabled_in_config
+bp,fundamental,valuation,active,1.0,higher_is_better,pb,1,Book-to-price proxy using inverse PB.,"valuation_family,bp",True
+ep,fundamental,valuation,active,1.0,higher_is_better,pe,1,Earnings-to-price proxy using inverse PE.,"valuation_family,ep",True
+size,fundamental,size,active,1.0,lower_is_better,total_mv,1,Log total market value.,"size_family,size",True
+mom_20,technical,trend,active,1.0,higher_is_better,close_adj,20,20-day adjusted-price momentum.,"momentum_family,mom_20",True
+turnover_20,technical,liquidity,active,1.0,higher_is_better,turnover_rate,20,20-day average turnover rate.,"liquidity_family,turnover_20",True
+vol_20,technical,volatility,active,1.0,lower_is_better,close_adj,20,20-day realized volatility of adjusted returns.,"volatility_family,vol_20",True
+rev_5,technical,reversal,deprecated,1.0,higher_is_better,close_adj,5,5-day reversal computed as negative short-term return.,"reversal_family,rev_5",True
+price_volume_corr_20,technical,liquidity,testing,1.0,explicit_sign,"close_adj,volume",20,20-day rolling correlation between price returns and volume changes.,"liquidity_family,price_volume_corr_20",True

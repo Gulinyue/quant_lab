@@ -1,0 +1,4 @@
+factor_name,horizon,rank_ic_mean,rank_ic_std,icir,valid_rank_ic_dates,quantile_dates,long_short_mean,research_status,message
+bp,1,,,,0,0,,failed_all_nan,No valid RankIC observations were produced.
+ep,1,,,,0,0,,failed_all_nan,No valid RankIC observations were produced.
+size,1,,,,0,0,,failed_all_nan,No valid RankIC observations were produced.

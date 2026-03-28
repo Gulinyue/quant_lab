@@ -1,0 +1,23 @@
+strategy:
+  name: ranking_v1
+  enabled: true
+  rebalance: weekly
+  top_n: 30
+  weighting: equal
+  allow_testing_factors: false
+  allow_review_factors: true
+factors:
+  mode: explicit
+  selected:
+  - bp
+  - ep
+  - size
+  blacklist: []
+  weights:
+    bp: 0.5
+    ep: 0.1
+    size: 0.4
+  score_transform: none
+constraints:
+  max_weight_per_asset: 0.05
+  min_selected_assets: 5

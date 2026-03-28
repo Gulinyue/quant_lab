@@ -1,12 +1,12 @@
 {
   "factor_name": "price_volume_corr_20",
   "horizon": 1,
-  "rank_ic_mean": NaN,
-  "rank_ic_std": NaN,
-  "icir": NaN,
-  "valid_rank_ic_dates": 0,
-  "quantile_dates": 0,
-  "long_short_mean": NaN,
-  "research_status": "failed_all_nan",
-  "message": "No valid RankIC observations were produced."
+  "rank_ic_mean": 0.042323943408538095,
+  "rank_ic_std": 0.5024743400401087,
+  "icir": 1.3371265337086642,
+  "valid_rank_ic_dates": 464,
+  "quantile_dates": 464,
+  "long_short_mean": 0.0021209395764207914,
+  "research_status": "valid",
+  "message": "Factor has enough valid observations for basic research."
 }

@@ -8,6 +8,138 @@ Quant Lab is a Windows-first A-share low-frequency research framework. The six-l
 D:\anaconda\envs\alpha_lab\python.exe -m streamlit run app.py
 ```
 
+## Streamlit Control Panel
+
+The local Streamlit control panel is now a minimal interactive quant experiment console instead of a static launcher.
+
+Current panel capabilities:
+
+- choose date range
+- choose stock-pool mode
+- manual stock list input
+- multi-select from current available assets
+- immediate stock-pool validation
+- add uncovered assets into `data.yaml` universe and refresh data
+- factor selection and factor weight editing
+- strategy parameter editing
+- backtest parameter editing
+- custom factor experiment by expression or CSV upload
+- one-click run for factor build / single-factor research / factor screening / strategy / backtest / report / full pipeline
+- current config preview
+- run log display
+- result summary, artifact status, latest positions, and NAV preview
+
+Start the panel:
+
+```powershell
+D:\anaconda\envs\alpha_lab\python.exe -m streamlit run app.py
+```
+
+### Stock-Pool Selection In The Panel
+
+Current stock-pool modes:
+
+- all available assets in the current panel coverage
+- manual asset list such as `000001.SZ, 000002.SZ, 600000.SH`
+- multi-select from available assets
+- index constituent mode placeholder
+
+Current implementation scope:
+
+- this round does not re-download raw data by stock pool
+- the panel applies the asset whitelist in factor build, strategy, backtest, and report related stages
+- if the whitelist becomes empty, the panel returns a clear error
+- the panel now shows:
+  - valid asset codes
+  - invalid-format asset codes
+  - asset codes not covered by the current panel
+- when invalid-format or uncovered asset codes exist, `运行策略 / 运行回测 / 全流程运行` are disabled
+- if an asset code is valid but not covered by current data, the panel can add it into `config/data.yaml` and refresh data
+
+### Strategy / Backtest Parameters In The Panel
+
+The panel can edit these runtime parameters:
+
+- selected factors
+- factor weights
+- `top_n`
+- `rebalance`
+- `weighting`
+- `score_transform`
+- `allow_testing_factors`
+- `allow_review_factors`
+- `initial_capital`
+- `execution_price`
+- `commission`
+- `slippage`
+- `stamp_tax_sell`
+- `lot_size`
+
+### Runtime Config Scope
+
+Panel edits apply to the current run only by default.
+
+Current rule:
+
+- YAML files are loaded as the baseline
+- panel changes are held in memory
+- when you click a run button, the current panel config is converted into a runtime config snapshot
+- that snapshot is written into the corresponding `runs/<run_id>/configs/` directory
+- original repo config files are not overwritten automatically
+
+### What The Buttons Call
+
+- `加入 universe 并刷新数据`: append uncovered valid asset codes into `config/data.yaml`, then run raw-data update and market-panel rebuild
+- `构建因子`: builds `factor_panel` with current date range, stock pool, and factor enable list
+- `运行单因子研究`: runs single-factor research on the currently filtered universe
+- `运行因子筛选`: builds correlation and screening summary
+- `运行策略`: generates `target_positions`
+- `运行回测`: generates `daily_positions / trades / nav / performance_summary`
+- `生成报告`: generates figures, tables, and HTML report
+- `全流程运行`: runs factor build -> research -> screening -> strategy -> backtest -> report
+
+### Custom Factor Experiment
+
+The panel now includes a minimal custom-factor experiment area.
+
+Supported modes:
+
+- expression-based factor
+- uploaded CSV factor
+
+Current expression helpers:
+
+- `shift(series, n)`
+- `pct_change(series, n)`
+- `rolling_mean(series, window)`
+- `rolling_std(series, window)`
+- `rolling_corr(left, right, window)`
+- `cs_rank(series)`
+- `log(...)`
+- `abs(...)`
+
+Example:
+
+```text
+(close_adj / shift(close_adj, 20)) - 1
+```
+
+CSV upload format:
+
+- must contain `trade_date`
+- must contain `asset`
+- must contain one factor value column
+
+Custom-factor research runs on the current filtered stock pool and writes outputs under `reports/factor_research/custom/`.
+
+### Current Control-Panel Limits
+
+- index constituent mode is still a placeholder
+- panel config is runtime-only by default; it does not yet provide a permanent "save back to YAML" workflow
+- the panel is still single-user and local-only
+- the panel focuses on experiment control, not advanced visualization or workflow scheduling
+- custom factors are currently for research only; they are not auto-registered into the main factor registry
+
 ## Fixed Interpreter
 
 All default commands use:

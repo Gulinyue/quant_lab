@@ -1,0 +1,4 @@
+factor_left,factor_right,correlation,abs_correlation,redundancy_hint
+bp,ep,1.0,1.0,high_corr_bp_ep
+bp,size,1.0,1.0,high_corr_bp_size
+ep,size,1.0,1.0,high_corr_ep_size

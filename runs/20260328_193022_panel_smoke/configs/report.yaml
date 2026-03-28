@@ -1,0 +1,8 @@
+report:
+  title: Quant Lab Backtest Report
+  output_html: reports/html/backtest_report.html
+  include_factor_section: true
+  include_strategy_section: true
+  include_trade_table: true
+  max_trade_rows: 20
+  max_position_rows: 20

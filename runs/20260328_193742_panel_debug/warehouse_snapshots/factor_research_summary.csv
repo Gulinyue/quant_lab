@@ -1,0 +1,4 @@
+factor_name,horizon,rank_ic_mean,rank_ic_std,icir,valid_rank_ic_dates,quantile_dates,long_short_mean,research_status,message
+bp,1,0.6666666666666665,0.20548046676563247,51.50370451673714,3,3,0.008304653464689707,insufficient_sample,Only 3 valid RankIC dates; below threshold 20.
+ep,1,0.6666666666666665,0.20548046676563247,51.50370451673714,3,3,0.008304653464689707,insufficient_sample,Only 3 valid RankIC dates; below threshold 20.
+size,1,-0.19999999999999998,0.3741657386773941,-8.485281374238571,3,3,0.000956508494554198,insufficient_sample,Only 3 valid RankIC dates; below threshold 20.

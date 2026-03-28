@@ -1,0 +1,136 @@
+{
+  "run_id": "20260328_193501_panel_run",
+  "started_at": "2026-03-28T19:35:01",
+  "finished_at": "2026-03-28T19:35:01",
+  "status": "failed",
+  "artifact_root": "D:\\quant_lab\\runs\\20260328_193501_panel_run",
+  "stage_statuses": {},
+  "config_snapshot": {
+    "runtime_configs": {
+      "data": {
+        "start_date": "2024-01-01",
+        "end_date": "2026-03-28",
+        "universe": [
+          "000001.SZ",
+          "000002.SZ",
+          "600000.SH",
+          "600519.SH",
+          "300750.SZ"
+        ],
+        "raw_format": "parquet",
+        "warehouse_format": "parquet"
+      },
+      "factors": {
+        "preprocess": {
+          "winsorize": true,
+          "winsorize_lower": 0.05,
+          "winsorize_upper": 0.95,
+          "zscore": true
+        },
+        "factors": [
+          {
+            "name": "bp",
+            "enabled": true
+          },
+          {
+            "name": "ep",
+            "enabled": true
+          },
+          {
+            "name": "size",
+            "enabled": true
+          },
+          {
+            "name": "mom_20",
+            "enabled": false
+          },
+          {
+            "name": "turnover_20",
+            "enabled": false
+          },
+          {
+            "name": "vol_20",
+            "enabled": false
+          },
+          {
+            "name": "rev_5",
+            "enabled": false
+          },
+          {
+            "name": "price_volume_corr_20",
+            "enabled": false
+          }
+        ]
+      },
+      "strategy": {
+        "strategy": {
+          "name": "ranking_v1",
+          "enabled": true,
+          "rebalance": "weekly",
+          "top_n": 30,
+          "weighting": "equal",
+          "allow_testing_factors": false,
+          "allow_review_factors": true
+        },
+        "factors": {
+          "mode": "explicit",
+          "selected": [
+            "bp",
+            "ep",
+            "size"
+          ],
+          "blacklist": [],
+          "weights": {
+            "bp": 0.5,
+            "ep": 0.1,
+            "size": 0.4
+          },
+          "score_transform": "none"
+        },
+        "constraints": {
+          "max_weight_per_asset": 0.05,
+          "min_selected_assets": 5
+        }
+      },
+      "backtest": {
+        "execution": {
+          "price": "next_open",
+          "lot_size": 100
+        },
+        "cost": {
+          "commission": 0.0003,
+          "slippage": 0.0005,
+          "stamp_tax_sell": 0.001
+        },
+        "portfolio": {
+          "initial_capital": 1000000.0
+        },
+        "constraints": {
+          "long_only": true
+        }
+      },
+      "report": {
+        "report": {
+          "title": "Quant Lab Backtest Report",
+          "output_html": "reports/html/backtest_report.html",
+          "include_factor_section": true,
+          "include_strategy_section": true,
+          "include_trade_table": true,
+          "max_trade_rows": 20,
+          "max_position_rows": 20
+        }
+      }
+    },
+    "summary": {
+      "action": "pipeline",
+      "messages": []
+    }
+  },
+  "input_files": [],
+  "output_files": [],
+  "warnings": [],
+  "errors": [
+    "股票池过滤后为空，请检查手动输入或多选结果。"
+  ],
+  "short_sample": false
+}

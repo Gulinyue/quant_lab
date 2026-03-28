@@ -1,0 +1,4 @@
+factor_name,group,required_columns,direction,min_history,row_count,non_null_ratio,finite_ratio,missing_ratio,status,message
+bp,fundamental,pb,higher_is_better,1,8,1.0,1.0,0.0,ok,
+ep,fundamental,pe,higher_is_better,1,8,1.0,1.0,0.0,ok,
+size,fundamental,total_mv,lower_is_better,1,8,1.0,1.0,0.0,ok,

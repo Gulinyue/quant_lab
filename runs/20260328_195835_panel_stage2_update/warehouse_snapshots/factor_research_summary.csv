@@ -1,0 +1,4 @@
+factor_name,horizon,rank_ic_mean,rank_ic_std,icir,valid_rank_ic_dates,quantile_dates,long_short_mean,research_status,message
+bp,1,0.009975038018032267,0.4821932485814845,0.32839285898464654,484,484,0.00027723871961275634,weak,RankIC mean is close to zero.
+ep,1,0.059197324414715716,0.4835148877561108,1.9435355888452135,299,299,0.0015473655247950635,valid,Factor has enough valid observations for basic research.
+size,1,0.019983639667918142,0.49958634645524547,0.634986218815408,484,484,0.0007115510189887425,weak,RankIC mean is close to zero.

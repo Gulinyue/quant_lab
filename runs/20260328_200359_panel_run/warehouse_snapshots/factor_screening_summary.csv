@@ -1,0 +1,9 @@
+factor_name,quality_status,predictiveness_status,redundancy_status,recommendation,reasons
+bp,ok,weak,ok,review,insufficient_history;weak_rank_ic
+ep,ok,weak,ok,review,insufficient_history;weak_rank_ic
+mom_20,not_built,not_researched,ok,keep,
+price_volume_corr_20,not_built,not_researched,ok,keep,
+rev_5,not_built,not_researched,ok,deprecate_candidate,
+size,ok,weak,ok,review,insufficient_history;weak_rank_ic
+turnover_20,not_built,not_researched,ok,keep,
+vol_20,not_built,not_researched,ok,keep,

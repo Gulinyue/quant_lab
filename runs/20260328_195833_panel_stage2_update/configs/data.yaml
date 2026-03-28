@@ -1,0 +1,11 @@
+start_date: '2024-01-02'
+end_date: '2024-01-05'
+universe:
+- 000001.SZ
+- 000002.SZ
+- 002173.SZ
+- 300750.SZ
+- 600000.SH
+- 600519.SH
+raw_format: parquet
+warehouse_format: parquet

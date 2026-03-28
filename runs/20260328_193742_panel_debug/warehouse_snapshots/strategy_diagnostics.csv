@@ -1,0 +1,13 @@
+trade_date,factor_name,factor_used,factor_drop_reason,candidate_count,selected_count,active_factor_count,dropped_factor_count,weighting_method,rebalance_flag,score_non_null_ratio,score_std,message
+2024-01-02,bp,True,,5,5,3,0,equal,True,1.0,0.9794038866037712,rebalance_day
+2024-01-02,ep,True,,5,5,3,0,equal,True,1.0,0.9794038866037712,rebalance_day
+2024-01-02,size,True,,5,5,3,0,equal,True,1.0,0.9794038866037712,rebalance_day
+2024-01-03,bp,True,,5,5,3,0,equal,True,1.0,0.9793773417313746,rebalance_day
+2024-01-03,ep,True,,5,5,3,0,equal,True,1.0,0.9793773417313746,rebalance_day
+2024-01-03,size,True,,5,5,3,0,equal,True,1.0,0.9793773417313746,rebalance_day
+2024-01-04,bp,True,,5,5,3,0,equal,True,1.0,0.9794305041497868,rebalance_day
+2024-01-04,ep,True,,5,5,3,0,equal,True,1.0,0.9794305041497868,rebalance_day
+2024-01-04,size,True,,5,5,3,0,equal,True,1.0,0.9794305041497868,rebalance_day
+2024-01-05,bp,True,,5,5,3,0,equal,True,1.0,0.9794791698462805,rebalance_day
+2024-01-05,ep,True,,5,5,3,0,equal,True,1.0,0.9794791698462805,rebalance_day
+2024-01-05,size,True,,5,5,3,0,equal,True,1.0,0.9794791698462805,rebalance_day

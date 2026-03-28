@@ -1,0 +1,12 @@
+{
+  "factor_name": "rev_5",
+  "horizon": 1,
+  "rank_ic_mean": -0.00573841562086794,
+  "rank_ic_std": 0.5576125892918891,
+  "icir": -0.163365256924615,
+  "valid_rank_ic_dates": 479,
+  "quantile_dates": 479,
+  "long_short_mean": -0.00028146792917375913,
+  "research_status": "weak",
+  "message": "RankIC mean is close to zero."
+}

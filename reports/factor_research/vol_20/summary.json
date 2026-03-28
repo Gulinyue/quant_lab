@@ -1,12 +1,12 @@
 {
   "factor_name": "vol_20",
   "horizon": 1,
-  "rank_ic_mean": NaN,
-  "rank_ic_std": NaN,
-  "icir": NaN,
-  "valid_rank_ic_dates": 0,
-  "quantile_dates": 0,
-  "long_short_mean": NaN,
-  "research_status": "failed_all_nan",
-  "message": "No valid RankIC observations were produced."
+  "rank_ic_mean": -0.039434056389636825,
+  "rank_ic_std": 0.5311796793443656,
+  "icir": -1.1785018567229946,
+  "valid_rank_ic_dates": 464,
+  "quantile_dates": 464,
+  "long_short_mean": 0.0011344696339932307,
+  "research_status": "valid",
+  "message": "Factor has enough valid observations for basic research."
 }
